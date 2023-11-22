@@ -7,6 +7,7 @@ const _useNavigation = () => {
     label: 'Docs',
     icon: 'i-ph-book-bookmark-duotone',
     to: '/docs',
+    search: false,
     children: [{
       label: 'Get Started',
       description: 'Learn how to get started with Nuxt.',
@@ -39,9 +40,21 @@ const _useNavigation = () => {
       active: route.path.startsWith('/docs/community')
     }]
   }, {
-    label: 'Modules',
-    icon: 'i-ph-puzzle-piece-duotone',
-    to: '/modules'
+    label: 'Integrations',
+    to: '/modules',
+    search: false,
+    active: route.path.startsWith('/modules') || route.path.startsWith('/deploy'),
+    children: [{
+      label: 'Modules',
+      description: 'Supercharge your Nuxt project with modules.',
+      icon: 'i-ph-puzzle-piece-duotone',
+      to: '/modules'
+    }, {
+      label: 'Hosting',
+      description: 'Deploy your Nuxt project anywhere.',
+      icon: 'i-ph-rocket-launch-duotone',
+      to: '/deploy'
+    }]
   }, {
     label: 'Templates',
     icon: 'i-ph-app-window-duotone',
@@ -55,6 +68,7 @@ const _useNavigation = () => {
     label: 'Enterprise',
     icon: 'i-ph-buildings-duotone',
     to: '/enterprise',
+    search: false,
     children: [{
       label: 'Support',
       to: '/enterprise/support',
@@ -138,7 +152,7 @@ const _useNavigation = () => {
 
   const searchLinks = computed(() => [...headerLinks.value.map(link => {
     // Remove `/docs` and `/enterprise` links from command palette
-    if (['/docs', '/enterprise'].includes(link.to)) {
+    if (link.search === false) {
       return {
         label: link.label,
         icon: link.icon,
@@ -161,6 +175,10 @@ const _useNavigation = () => {
     key: 'modules-search',
     label: 'Modules',
     search: async (q) => {
+      if (!q) {
+        return []
+      }
+
       const { modules, fetchList } = useModules()
       if (!modules.value.length) {
         await fetchList()
@@ -176,6 +194,32 @@ const _useNavigation = () => {
             src: moduleImage(module.icon)
           },
           to: `/modules/${module.name}`
+        }))
+    }
+  }, {
+    key: 'hosting-search',
+    label: 'Hosting',
+    search: async (q) => {
+      if (!q) {
+        return []
+      }
+
+      const { providers, fetchList } = useHostingProviders()
+      if (!providers.value.length) {
+        await fetchList()
+      }
+
+      return providers.value
+        .filter(hosting => ['title'].map(field => hosting[field]).filter(Boolean).some(value => value.search(searchTextRegExp(q)) !== -1))
+        .map(hosting => ({
+          id: `hosting-${hosting._path}`,
+          label: hosting.title,
+          suffix: hosting.description,
+          icon: hosting.logoIcon,
+          avatar: hosting.logoSrc ? {
+            src: hosting.logoSrc
+          } : undefined,
+          to: hosting._path
         }))
     }
   }, {
