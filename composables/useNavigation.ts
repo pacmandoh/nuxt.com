@@ -57,10 +57,21 @@ const _useNavigation = () => {
         to: '/deploy'
       }]
     }, {
-      label: 'Templates',
-      icon: 'i-ph-browsers-duotone',
-      to: '/templates'
-
+      label: 'Resources',
+      to: '/templates',
+      search: false,
+      active: route.path.startsWith('/templates') || route.path.startsWith('/video-courses'),
+      children: [{
+        label: 'Templates',
+        icon: 'i-ph-browsers-duotone',
+        description: 'Start your next project with a Nuxt template.',
+        to: '/templates'
+      }, {
+        label: 'Video Courses',
+        description: 'Learn Nuxt by watching video courses.',
+        icon: 'i-ph-graduation-cap-duotone',
+        to: '/video-courses'
+      }]
     }, {
       label: 'Showcase',
       icon: 'i-ph-projector-screen-duotone',
@@ -105,13 +116,12 @@ const _useNavigation = () => {
       to: 'https://nuxters.nuxt.com',
       target: '_blank'
     }, {
-      label: 'Video Courses',
-      to: 'https://masteringnuxt.com/nuxt3?ref=nuxt',
-      target: '_blank'
-    }, {
       label: 'Nuxt on GitHub',
       to: 'https://github.com/nuxt',
       target: '_blank'
+    }, {
+      label: 'Team',
+      to: '/team'
     }, {
       label: 'Design Kit',
       to: '/design-kit'
@@ -164,6 +174,10 @@ const _useNavigation = () => {
 
     return link
   }).filter(Boolean), {
+    label: 'Team',
+    icon: 'i-ph-users-duotone',
+    to: '/team'
+  }, {
     label: 'Design Kit',
     icon: 'i-ph-palette-duotone',
     to: '/design-kit'

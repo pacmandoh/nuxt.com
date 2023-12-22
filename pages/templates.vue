@@ -32,7 +32,7 @@ defineOgImage({
         <UPageGrid class="lg:grid-cols-3 xl:grid-cols-4">
           <UPageCard
             v-for="(template, index) in templates"
-            :key="index"
+            :key="template.slug"
             :description="template.description"
             :ui="{
               header: { base: 'aspect-w-4 aspect-h-2', padding: '' },
@@ -65,8 +65,17 @@ defineOgImage({
             <template #title>
               <span class="flex-1">{{ template.name }}</span>
               <UBadge
-                v-if="template.badge"
+                v-if="template.badge === 'Premium'"
                 :label="template.badge"
+                color="blue"
+                variant="subtle"
+                size="xs"
+                class="rounded-full"
+              />
+              <UBadge
+                v-else-if="template.badge === 'Freemium'"
+                :label="template.badge"
+                color="green"
                 variant="subtle"
                 size="xs"
                 class="rounded-full"
