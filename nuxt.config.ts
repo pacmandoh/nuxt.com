@@ -45,14 +45,15 @@ if (examplesSourceBase) {
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   extends: process.env.NUXT_UI_PRO_PATH || '@nuxt/ui-pro',
+  // @ts-ignore
   modules: [
     '@nuxt/content',
     '@nuxt/ui',
-    '@nuxt/devtools',
     '@nuxt/image',
     '@nuxtjs/plausible',
     '@nuxtjs/fontaine',
     '@nuxtjs/google-fonts',
+    '@nuxtjs/turnstile',
     '@nuxthq/studio',
     '@vueuse/nuxt',
     'nuxt-og-image',
@@ -64,6 +65,7 @@ export default defineNuxtConfig({
   routeRules: {
     // Pre-render
     '/api/search.json': { prerender: true },
+    '/api/templates.json': { prerender: true },
     '/blog/rss.xml': { prerender: true },
     // '/sitemap.xml': { prerender: true },
     '/newsletter': { prerender: true },
@@ -119,6 +121,7 @@ export default defineNuxtConfig({
       }
     }
   },
+
   $development: {
     runtimeConfig: {
       public: {
